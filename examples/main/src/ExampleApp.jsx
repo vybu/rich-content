@@ -22,6 +22,7 @@ class ExampleApp extends PureComponent {
   constructor(props) {
     super(props);
     this.state = this.getInitialState();
+    this.onEditorChange(this.state.editorState);
     disableBrowserBackButton();
   }
 
@@ -30,6 +31,7 @@ class ExampleApp extends PureComponent {
     const containerKey = generateKey('container');
     const localState = loadStateFromStorage();
     const contentState = getContentStateFromEditorState(createEmpty());
+    const { editorState } = getStateFromObject(localState.contentState || contentState);
     return {
       containerKey,
       contentState,
@@ -43,6 +45,7 @@ class ExampleApp extends PureComponent {
       shouldMockUpload: true,
       shouldMultiSelectImages: false,
       ...localState,
+      editorState,
     };
   }
 
@@ -55,7 +58,9 @@ class ExampleApp extends PureComponent {
   }
 
   onEditorChange = editorState => {
-    this.setState({ contentState: getContentStateFromEditorState(editorState) });
+    this.setState({ contentState: getContentStateFromEditorState(editorState) }, () => {
+      saveStateToStorage({ contentState: getContentStateFromEditorState(editorState) });
+    });
     this.props.onEditorChange && this.props.onEditorChange(editorState);
   };
 
@@ -148,7 +153,7 @@ class ExampleApp extends PureComponent {
             <ErrorBoundary>
               <Editor
                 onChange={this.onEditorChange}
-                editorState={editorState}
+                editorState={this.state.editorState || editorState}
                 isMobile={this.state.editorIsMobile || isMobile}
                 shouldMockUpload={this.state.shouldMockUpload}
                 shouldMultiSelectImages={this.state.shouldMultiSelectImages}
