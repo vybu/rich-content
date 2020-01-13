@@ -12,7 +12,6 @@ describe('rtl', () => {
         appName: 'RTL',
         testName: this.test.parent.title,
         browser: DEFAULT_DESKTOP_BROWSERS,
-        dontCloseBatches: true,
       });
     });
 
@@ -57,7 +56,6 @@ describe('rtl', () => {
         appName: 'RTL',
         testName: this.test.parent.title,
         browser: DEFAULT_MOBILE_BROWSERS,
-        dontCloseBatches: true,
       });
     });
 

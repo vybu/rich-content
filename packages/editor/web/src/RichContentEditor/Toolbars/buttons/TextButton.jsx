@@ -99,7 +99,6 @@ export default class TextButton extends Component {
         showTooltip={showTooltip}
         tooltipText={tooltipText}
         button={textButton}
-        tooltipOffset={{ y: -20 }}
         shouldRefreshTooltips={shouldRefreshTooltips}
       />
     );
