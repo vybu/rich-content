@@ -2,7 +2,7 @@
 import { hot } from 'react-hot-loader/root';
 import React, { PureComponent } from 'react';
 import { ReflexContainer, ReflexElement, ReflexSplitter } from 'react-reflex';
-import { compact, flatMap } from 'lodash';
+import { compact, flatMap, debounce } from 'lodash';
 import { createEmpty, convertToRaw } from 'wix-rich-content-editor/dist/lib/editorStateConversion';
 import {
   ContentStateEditor,
@@ -22,7 +22,6 @@ class ExampleApp extends PureComponent {
   constructor(props) {
     super(props);
     this.state = this.getInitialState();
-    this.onEditorChange(this.state.editorState);
     disableBrowserBackButton();
   }
 
@@ -57,19 +56,22 @@ class ExampleApp extends PureComponent {
     window && window.removeEventListener('resize', this.onContentStateEditorResize);
   }
 
-  onEditorChange = editorState => {
-    this.setState({ contentState: getContentStateFromEditorState(editorState) }, () => {
-      saveStateToStorage({ contentState: getContentStateFromEditorState(editorState) });
-    });
-    this.props.onEditorChange && this.props.onEditorChange(editorState);
-  };
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    saveStateToStorage(this.state);
+    this.updateContentState(this.props.editorState)
+  }
+
+  onResetContent = () => this.setState({ editorState: createEmpty() });
+
+  updateContentState = debounce(editorState => {
+    this.setState({ contentState: getContentStateFromEditorState(editorState) });
+  }, 3000);
 
   setContentStateEditor = ref => (this.contentStateEditor = ref);
 
   onContentStateEditorChange = obj => {
-    const { editorState } = getStateFromObject(obj);
-    this.setState({ editorState });
     if (this.props.onEditorChange) {
+      const { editorState } = getStateFromObject(obj);
       this.props.onEditorChange(editorState);
     }
   };
@@ -78,12 +80,7 @@ class ExampleApp extends PureComponent {
     this.contentStateEditor && this.contentStateEditor.refreshLayout();
 
   onSectionVisibilityChange = (sectionName, isVisible) => {
-    this.setState(
-      { [`is${sectionName}Shown`]: isVisible, containerKey: generateKey('prefix') },
-      () => {
-        saveStateToStorage(this.state);
-      }
-    );
+    this.setState({ [`is${sectionName}Shown`]: isVisible, containerKey: generateKey('prefix') });
     this.onContentStateEditorResize();
   };
   onSetLocale = locale => {
@@ -151,9 +148,9 @@ class ExampleApp extends PureComponent {
             onHide={this.onSectionVisibilityChange}
           />
           <SectionContent>
-            <ErrorBoundary>
+            <ErrorBoundary reset={this.onResetContent}>
               <Editor
-                onChange={this.onEditorChange}
+                onChange={this.props.onEditorChange}
                 editorState={this.state.editorState || editorState}
                 isMobile={this.state.editorIsMobile || isMobile}
                 shouldMockUpload={this.state.shouldMockUpload}
