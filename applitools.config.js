@@ -1,19 +1,19 @@
 const { execSync } = require('child_process');
 
-let privateConfig = {};
-try {
-  privateConfig = require('./applitools.private.config.js');
-} catch (e) {}
-
 function getHeadHash() {
   return execSync('git rev-parse --verify HEAD')
     .toString()
     .trim();
 }
 
+let privateConfig = {};
+try {
+  privateConfig = require('./applitools.private.config.js');
+  privateConfig = { ...privateConfig, batchId: getHeadHash() };
+} catch (e) {}
+
 module.exports = {
   ...privateConfig,
   concurrency: 200,
-  batchId: getHeadHash(),
-  // dontCloseBatches: true,
+  dontCloseBatches: true,
 };
