@@ -25,8 +25,7 @@ jobs:
       APPLITOOLS_API_KEY: ${{ secrets.APPLITOOLS_API_KEY }}
       APPLITOOLS_SERVER_URL: ${{ secrets.APPLITOOLS_SERVER_URL }}
       APPLITOOLS_BATCH_ID: ${{ github.sha }}
-      APPLITOOLS_BATCH_NAME: ${{ github.event.head_commit.message }}
-      APPLITOOLS_SHOW_LOGS: ${{ true }}
+      APPLITOOLS_BATCH_NAME: aaaaa
   content-state-tests:
     runs-on: ubuntu-16.04
     steps:
