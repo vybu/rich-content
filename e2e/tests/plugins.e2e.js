@@ -18,6 +18,7 @@ const eyesOpen = ({
     appName: 'Plugins',
     testName: title,
     browser: DEFAULT_DESKTOP_BROWSERS,
+    batchName: 'aaaa',
   });
 
 describe('plugins', () => {
