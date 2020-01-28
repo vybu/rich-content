@@ -20,7 +20,7 @@ jobs:
         if: always()
         uses: wei/curl@v1.1.1
         with:
-          args: -d "" -X POST https://wixeyesapi.applitools.com/api/externals/github/servers/github.com/commit/${{ github.sha }}/complete?apiKey=${{ secrets.APPLITOOLS_API_KEY }}
+          args: -d "" -X POST ${{ secrets.APPLITOOLS_SERVER_URL }}/api/externals/github/servers/github.com/commit/${{ github.sha }}/complete?apiKey=${{ secrets.APPLITOOLS_API_KEY }}
     env:
       APPLITOOLS_API_KEY: ${{ secrets.APPLITOOLS_API_KEY }}
       APPLITOOLS_SERVER_URL: ${{ secrets.APPLITOOLS_SERVER_URL }}
