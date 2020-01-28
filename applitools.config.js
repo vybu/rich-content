@@ -16,5 +16,4 @@ module.exports = {
   ...privateConfig,
   concurrency: 200,
   dontCloseBatches: true,
-  notifyOnCompletion: true,
 };
