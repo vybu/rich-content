@@ -26,14 +26,16 @@ class ExampleApp extends PureComponent {
   }
 
   getInitialState() {
+    const localState = loadStateFromStorage();
+    const { contentState } = localState;
+    if (contentState) {
+      const { editorState } = getStateFromObject(contentState);
+      this.props.onEditorChange(editorState);
+    }
     const { isMobile } = this.props;
     const containerKey = generateKey('container');
-    const localState = loadStateFromStorage();
-    const contentState = getContentStateFromEditorState(createEmpty());
-    const { editorState } = getStateFromObject(localState.contentState || contentState);
     return {
       containerKey,
-      contentState,
       isEditorShown: true,
       isViewerShown: !isMobile,
       isPreviewShown: false,
@@ -44,7 +46,6 @@ class ExampleApp extends PureComponent {
       shouldMockUpload: true,
       shouldMultiSelectImages: false,
       ...localState,
-      editorState,
     };
   }
 
@@ -58,14 +59,12 @@ class ExampleApp extends PureComponent {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     saveStateToStorage(this.state);
-    this.updateContentState(this.props.editorState)
+    this.updateContentState(this.props.editorState);
   }
-
-  onResetContent = () => this.setState({ editorState: createEmpty() });
 
   updateContentState = debounce(editorState => {
     this.setState({ contentState: getContentStateFromEditorState(editorState) });
-  }, 3000);
+  }, 100);
 
   setContentStateEditor = ref => (this.contentStateEditor = ref);
 
@@ -148,7 +147,7 @@ class ExampleApp extends PureComponent {
             onHide={this.onSectionVisibilityChange}
           />
           <SectionContent>
-            <ErrorBoundary reset={this.onResetContent}>
+            <ErrorBoundary>
               <Editor
                 onChange={this.props.onEditorChange}
                 editorState={this.state.editorState || editorState}
