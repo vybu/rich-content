@@ -73,4 +73,6 @@ function run() {
   }
 }
 
-run();
+// run();
+exec('npx surge teardown rich-content-master.surge.sh');
+exec('npx surge teardown rich-content-storybook-master.surge.sh');
