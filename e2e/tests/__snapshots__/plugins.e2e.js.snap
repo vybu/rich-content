@@ -929,7 +929,7 @@ exports[`plugins > video > add a video from URL #0`] =
       "entityRanges": [],
       "inlineStyleRanges": [],
       "key": 0,
-      "text": "Will this fix the flakiness?",
+      "text": "",
       "type": "unstyled"
     },
     {
@@ -1013,7 +1013,7 @@ exports[`plugins > soundcloud > add a soundcloud URL #0`] =
       "entityRanges": [],
       "inlineStyleRanges": [],
       "key": 0,
-      "text": "Will this fix the flakiness?",
+      "text": "",
       "type": "unstyled"
     },
     {

@@ -3,7 +3,7 @@ on: push
 
 jobs:
   visual-tests:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -14,7 +14,17 @@ jobs:
           build: npm run build:test
           start: npm run e2e:app:run
           wait-on: 'http://localhost:3002'
-          config: video=false
+          config: video=true
+      - uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: e2e/cypress/screenshots
+      - uses: actions/upload-artifact@v1
+        if: always()
+        with:
+          name: cypress-videos
+          path: e2e/cypress/videos
 
       - name: Update Applitools batch status
         if: always()
@@ -26,7 +36,7 @@ jobs:
       APPLITOOLS_SERVER_URL: ${{ secrets.APPLITOOLS_SERVER_URL }}
       APPLITOOLS_BATCH_ID: ${{ github.sha }}
   content-state-tests:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -37,12 +47,24 @@ jobs:
           build: npm run build:test
           start: npm run e2e:app:run
           wait-on: 'http://localhost:3002'
-          config: video=false
+          config: video=true
           env: MATCH_CONTENT_STATE=true
+
+      - uses: actions/upload-artifact@v1
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: e2e/cypress/screenshots
+      - uses: actions/upload-artifact@v1
+        if: always()
+        with:
+          name: cypress-videos
+          path: e2e/cypress/videos
     env:
       APPLITOOLS_IS_DISABLED: true
+
   unit-tests:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1.1.0
@@ -52,7 +74,7 @@ jobs:
       - run: npm run build
       - run: npm run test:unit
   lint:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1.1.0
@@ -61,7 +83,7 @@ jobs:
       - run: npm install
       - run: npm run lint
   deploy-examples:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1.1.0

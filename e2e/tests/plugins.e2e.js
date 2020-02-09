@@ -191,7 +191,9 @@ describe('plugins', () => {
       eyesOpen(this);
     });
 
-    beforeEach('load editor', () => cy.loadEditorAndViewer('empty'));
+    beforeEach('load editor', () => {
+      cy.loadEditorAndViewer('empty');
+    });
 
     after(() => cy.eyesClose());
 
@@ -203,8 +205,6 @@ describe('plugins', () => {
     it('add a video from URL', function() {
       cy.openVideoUploadModal().addVideoFromURL();
       cy.shrinkPlugin();
-      cy.waitForVideoToLoad();
-      cy.focusEditor().enterParagraphs(['Will this fix the flakiness?']);
       cy.eyesCheckWindow(this.test.title);
     });
 
@@ -223,7 +223,9 @@ describe('plugins', () => {
       eyesOpen(this);
     });
 
-    beforeEach('load editor', () => cy.loadEditorAndViewer('empty'));
+    beforeEach('load editor', () => {
+      cy.loadEditorAndViewer('empty');
+    });
 
     after(() => cy.eyesClose());
 
@@ -234,9 +236,8 @@ describe('plugins', () => {
 
     it('add a soundcloud URL', function() {
       cy.openSoundCloudModal().addSoundCloud();
-      cy.waitForVideoToLoad();
       cy.shrinkPlugin();
-      cy.focusEditor().enterParagraphs(['Will this fix the flakiness?']);
+      cy.waitForVideoToLoad();
       cy.eyesCheckWindow(this.test.title);
     });
   });

@@ -369,11 +369,21 @@ Cypress.Commands.add('addSoundCloud', () => {
 });
 
 Cypress.Commands.add('addVideoFromURL', () => {
+  cy.clock(Date.now(), [`setTimeout`]);
   cy.get(`[data-hook*=${VIDEO_PLUGIN.INPUT}]`).type('https://youtu.be/BBu5codsO6Y');
   cy.get(`[data-hook*=${VIDEO_PLUGIN.ADD}]`).click();
   cy.get(`[data-hook=${PLUGIN_COMPONENT.VIDEO}]:first`)
     .parent()
     .click();
+  cy.tick(1000);
+  cy.waitForVideoToLoad();
+});
+
+Cypress.Commands.add('waitForVideoToLoad', { prevSubject: 'optional' }, () => {
+  cy.get('[data-loaded=true]', { timeout: 15000 }).should('have.length', 2);
+  cy.window()
+    .its('__CONTENT_SNAPSHOT__')
+    .should('to.have.nested.property', 'entityMap.0.data.metadata');
 });
 
 Cypress.Commands.add('addHtml', () => {
@@ -415,10 +425,6 @@ Cypress.Commands.add('dragAndDropPlugin', (src, dest) => {
     .trigger('dragenter', { dataTransfer })
     .trigger('dragover', { dataTransfer })
     .trigger('drop', { dataTransfer });
-});
-
-Cypress.Commands.add('waitForVideoToLoad', { prevSubject: 'optional' }, () => {
-  cy.get('[data-loaded=true]', { timeout: 15000 }).should('have.length', 2);
 });
 
 // disable screenshots in debug mode. So there is no diffrence to ci.
