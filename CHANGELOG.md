@@ -16,6 +16,9 @@
 ### :bug: Bug Fix
 - `image`
   - [#696](https://github.com/wix-incubator/rich-content/pull/696) fix images with transparency show shadow outline
+- `gallery`
+  - [#697](https://github.com/wix-incubator/rich-content/pull/697) altText keeping value when changing to next image 
+
 </details>
 <hr/>
 
