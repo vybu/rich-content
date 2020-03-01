@@ -1,19 +1,10 @@
 @import '~wix-rich-content-common/dist/statics/styles/consts';
-@import "~wix-rich-content-common/dist/statics/styles/mixins";
+@import '~wix-rich-content-common/dist/statics/styles/mixins';
 @import '~wix-rich-content-common/dist/statics/styles/palette';
 @import '~wix-rich-content-common/dist/statics/styles/fonts';
+@import '~wix-rich-content-common/dist/statics/styles/viewer-general';
 
 //*** GENERIC ***//
-.flex {
-  display: flex;
-}
-
-.absFull {
-  display: absolute;
-  top: 0;
-  left: 0;
-}
-
 // *:focus,
 .focused {
 }
@@ -46,25 +37,13 @@
   display: none;
 }
 
-.pluginContainer,
-.pluginContainerReadOnly {
-  position: relative;
-}
-
-.pluginContainerReadOnly {
-  @extend .fontElementMap;
-}
-
 .pluginContainer {
   @extend .fontElementMap;
+  position: relative;
 
   &:hover {
     @include block-select;
   }
-}
-
-.pluginContainerMobile {
-  max-width: 100%;
 }
 
 //*** PANEL ***//
@@ -93,13 +72,4 @@
   .ReactModalPortal {
     @extend .glob_fontElementMap;
   }
-}
-
-.isImage {
-  text-decoration: none;
-  color: #333333;
-}
-
-.anchor {
-  display: block;
 }

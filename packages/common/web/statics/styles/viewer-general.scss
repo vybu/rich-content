@@ -1,0 +1,25 @@
+@import './consts';
+@import './mixins';
+@import './palette';
+@import './fonts';
+
+.noOutline {
+  *:focus {
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+//*** BLOCK ***//
+.pluginContainerReadOnly {
+  @extend .fontElementMap;
+  position: relative;
+}
+
+.pluginContainerMobile {
+  max-width: 100%;
+}
+
+.anchor {
+  display: block;
+}

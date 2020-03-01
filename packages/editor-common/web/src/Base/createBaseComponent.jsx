@@ -11,6 +11,7 @@ import {
   createHocName,
 } from 'wix-rich-content-common';
 import styles from '../../statics/styles/general.scss';
+import viewerStyles from 'wix-rich-content-common/dist/statics/styles/viewer-general.scss';
 import rtlIgnoredStyles from 'wix-rich-content-common/dist/statics/styles/general.rtlignore.scss';
 
 const DEFAULTS = Object.freeze({
@@ -48,7 +49,7 @@ const createBaseComponent = ({
     constructor(props) {
       super(props);
       this.state = { componentState: {}, ...this.stateFromProps(props) };
-      this.styles = { ...styles, ...rtlIgnoredStyles };
+      this.styles = { ...styles, ...viewerStyles, ...rtlIgnoredStyles };
     }
 
     componentWillReceiveProps(nextProps) {
